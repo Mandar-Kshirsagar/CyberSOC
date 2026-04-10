@@ -1,0 +1,67 @@
+name: cybersoc
+version: "1.0.0"
+description: |
+  Cybersecurity Incident Response Simulation Environment
+  Train AI agents to act as SOC analysts: triage alerts, investigate incidents, 
+  and respond to threats in a safe, simulated environment.
+
+author: CyberSOC Team
+license: Apache-2.0
+
+tags:
+  - cybersecurity
+  - incident-response
+  - soc-analyst
+  - security-operations
+  - reinforcement-learning
+
+entrypoint: cybersoc.environment:CyberSOCEnv
+
+observation_space:
+  type: pydantic
+  model: cybersoc.models:CyberSOCObservation
+
+action_space:
+  type: pydantic
+  model: cybersoc.models:CyberSOCAction
+
+reward_space:
+  type: pydantic
+  model: cybersoc.models:CyberSOCReward
+
+info_space:
+  type: pydantic
+  model: cybersoc.models:CyberSOCInfo
+
+tasks:
+  - name: phishing_triage
+    description: "Classify email alerts as phishing or legitimate"
+    difficulty: easy
+    max_steps: 10
+    success_threshold: 0.7
+
+  - name: malware_investigation
+    description: "Investigate host alerts to determine malware presence"
+    difficulty: medium
+    max_steps: 15
+    success_threshold: 0.6
+
+  - name: incident_response
+    description: "Coordinate response to multi-vector security incident"
+    difficulty: hard
+    max_steps: 20
+    success_threshold: 0.5
+
+requirements:
+  python: ">=3.10"
+  packages:
+    - openenv-core>=0.2.0
+    - pydantic>=2.0
+    - fastapi>=0.100
+    - uvicorn>=0.23
+
+deployment:
+  dockerfile: Dockerfile
+  hf_space_tag: openenv
+  port: 7860
+  health_endpoint: /reset
